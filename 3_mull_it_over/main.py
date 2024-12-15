@@ -16,9 +16,8 @@ if __name__ == "__main__":
     parser.add_argument("filename", nargs='?', default="input.txt")
     args = parser.parse_args()
 
-    with open(Path(__file__).parent / args.filename, "r") as input_file:
+    with open(Path(__file__).parent / args.filename, "r") as input_file:  # noqa: F821
         data = parse_input(input_file)
-
 
     print("Part 1")
     print("------")

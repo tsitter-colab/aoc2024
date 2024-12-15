@@ -1,5 +1,6 @@
-from argparse import ArgumentParser, FileType
+from argparse import ArgumentParser
 from collections import Counter
+from pathlib import Path
 
 
 def parse_input(input_file) -> tuple[list[int], list[int]]:
@@ -26,10 +27,11 @@ def similarity(l1, l2):
 
 if __name__ == "__main__":
     parser = ArgumentParser()
-    parser.add_argument("--input", type=FileType("r"), required=True)
+    parser.add_argument("filename", nargs='?', default="input.txt")
     args = parser.parse_args()
 
-    l1, l2 = parse_input(args.input)
+    with open(Path(__file__).parent / args.filename, "r") as input_file:
+        l1, l2 = parse_input(input_file)
 
     print("Part 1")
     print("------")

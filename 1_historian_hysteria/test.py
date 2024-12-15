@@ -1,10 +1,11 @@
+from pathlib import Path
 import unittest
-from main import parse_input, total_distance, similarity
+from .main import parse_input, total_distance, similarity
 
 
 class TestFunctions(unittest.TestCase):
     PARSED_INPUT = ([1, 2, 3, 3, 3, 4], [3, 3, 3, 4, 5, 9])
-    INPUT_FILE = "test_input.txt"
+    INPUT_FILE = Path(__file__).parent / "test_input.txt"
 
     def test_parse_input(self):
         with open(self.INPUT_FILE, "r") as test_input:

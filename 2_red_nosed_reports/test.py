@@ -1,6 +1,6 @@
 import unittest
-from main import is_safe, is_safe_with_dampener, parse_input
-
+from .main import is_safe, is_safe_with_dampener, parse_input
+from pathlib import Path
 
 class TestFunctions(unittest.TestCase):
     PARSED_INPUT = (
@@ -11,7 +11,7 @@ class TestFunctions(unittest.TestCase):
         [8, 6, 4, 4, 1],
         [1, 3, 6, 7, 9],
     )
-    INPUT_FILE = "test_input.txt"
+    INPUT_FILE =Path(__file__).parent / "test_input.txt"
 
     def test_parse_input(self):
         with open(self.INPUT_FILE, "r") as test_input:

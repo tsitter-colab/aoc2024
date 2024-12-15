@@ -1,9 +1,11 @@
-from argparse import ArgumentParser, FileType
+from argparse import ArgumentParser
+from pathlib import Path
 from typing import Iterator
 
 
 def parse_input(input_file) -> Iterator[list[int]]:
     # Reads the input and returns two lists (left column, right column) as sorted ints
+
     def number_generator(input_file):
         for line in input_file:
             yield list(map(int, line.split()))
@@ -35,12 +37,14 @@ def is_safe_with_dampener(report) -> bool:
 
     return False
 
+
 if __name__ == "__main__":
     parser = ArgumentParser()
-    parser.add_argument("--input", type=FileType("r"), required=True)
+    parser.add_argument("filename", nargs='?', default="input.txt")
     args = parser.parse_args()
 
-    reports = parse_input(args.input)
+    with open(Path(__file__).parent / args.filename, "r") as input_file:
+        reports = parse_input(input_file)
 
     print("Part 1")
     print("------")
@@ -50,7 +54,5 @@ if __name__ == "__main__":
     print("------")
     print(
         "Total safe with dampener: ",
-        sum(
-            is_safe_with_dampener(report) for report in reports
-        ),
+        sum(is_safe_with_dampener(report) for report in reports),
     )
