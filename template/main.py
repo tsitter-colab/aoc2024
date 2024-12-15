@@ -13,10 +13,10 @@ def process(data):
 
 if __name__ == "__main__":
     parser = ArgumentParser()
-    parser.add_argument("filename", nargs='?', type=FileType("r"), default=Path(__file__).parent / "input.txt")
+    parser.add_argument("filename", nargs='?', default="input.txt")
     args = parser.parse_args()
 
-    with open(args.filename, "r") as input_file:
+    with open(Path(__file__).parent / args.filename, "r") as input_file:
         data = parse_input(input_file)
 
 
