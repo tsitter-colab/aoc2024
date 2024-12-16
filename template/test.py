@@ -13,5 +13,6 @@ class TestFunctions(unittest.TestCase):
 
         self.assertEqual(result, self.PARSED_INPUT)
 
+
 if __name__ == "__main__":
     unittest.main()

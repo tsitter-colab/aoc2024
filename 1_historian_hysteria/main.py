@@ -27,7 +27,7 @@ def similarity(l1, l2):
 
 if __name__ == "__main__":
     parser = ArgumentParser()
-    parser.add_argument("filename", nargs='?', default="input.txt")
+    parser.add_argument("filename", nargs="?", default="input.txt")
     args = parser.parse_args()
 
     with open(Path(__file__).parent / args.filename, "r") as input_file:
