@@ -4,7 +4,7 @@ from typing import Iterator
 import re
 
 MUL_REGEX = r"mul\((?P<left>\d{1,3})\,(?P<right>\d{1,3})\)"
-DISABLED_REGEX = r"don\'t\(\).*?do\(\)"
+DISABLED_REGEX = r"(don\'t\(\).*?)+do\(\)"
 
 def parse_input(input_file) -> Iterator[list[int]]:
     return input_file.read()
@@ -33,26 +33,23 @@ def process_with_disabled_instructions(data):
     start = 0
 
     # Find all stretches of don't()...do() and remove them
-    for m in re.finditer(DISABLED_REGEX, data):
+    for m in re.finditer(DISABLED_REGEX, data, flags=re.DOTALL):
         enabled_spans.append((start, m.start()))
         start = m.end()
-
-    # We need to determine if this final span contains a don't() instruction
-    # that does not have a corresponding do() instruction and remove that as well
-    if (final_disable_pos := data[start:len(data)].find("don't()")) != -1:
-        print("Found final don't() instruction")
-        enabled_spans.append((start, start + final_disable_pos))
-
-    if not enabled_spans:
-        print("No disabled instructions removed, using the whole string")
-        enabled_spans = [(0, len(data))]
+    else:
+        # We still need to handle the last stretch of instructions after the last do()
+        # If this final span contains an unmatched don't() instruction then remove that stretch
+        # as well, else add the whole stretch to the enabled instructions
+        if (final_disable_pos := data[start:len(data)].find("don't()")) != -1:
+            enabled_spans.append((start, start + final_disable_pos))
+        else:
+            enabled_spans.append((start, len(data)))
 
     enabled_instruction = "".join(data[start:end] for start, end in enabled_spans)
-
+    
     # extract all pairs of numbers in the enabled instructions
     pairs = [(int(m.group("left")), int(m.group("right"))) for m in re.finditer(MUL_REGEX, enabled_instruction)]
 
-    print(pairs)
     return sum([x * y for x, y in pairs])
 
 

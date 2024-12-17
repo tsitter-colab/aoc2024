@@ -41,5 +41,13 @@ class TestFunctions(unittest.TestCase):
         result = process_with_disabled_instructions(data)        
         assert result == 1
 
+    def test_process_with_disabled_instructions_nested_dont(self):
+        data = "mul(7,1)don't()mul(100,1)don't()mul(100,1)do()do()mul(1,7)"
+
+        result = process_with_disabled_instructions(data)
+        print(result)
+        assert result == 14
+
+
 if __name__ == "__main__":
     unittest.main()
