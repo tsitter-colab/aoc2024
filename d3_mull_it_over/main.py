@@ -53,6 +53,29 @@ def process_with_disabled_instructions(data):
     return sum([x * y for x, y in pairs])
 
 
+def process_flag_method(data):
+    """
+    This method uses a flag to determine whether an instruction is enabled or not.
+    This flag is toggled by the don't() and do() instructions.
+
+    When the flag is set to False, the instructions are ignored.
+    """
+
+    enabled = True
+    pairs = []
+
+    # matches a mul instruction, a do instruction, or a don't instruction
+    regex = r"mul\((?P<left>\d{1,3})\,(?P<right>\d{1,3})\)|(do\(\))|(don't\(\))"
+
+    for left, right, do, dont in re.findall(regex, data):
+        if do or dont:
+            enabled = do or False
+            continue
+        if enabled and left and right:
+            pairs.append((int(left), int(right)))
+
+    return sum([x * y for x, y in pairs])
+   
 if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument("filename", nargs="?", default="input.txt")
@@ -68,3 +91,8 @@ if __name__ == "__main__":
     print("\nPart 2")
     print("------")
     print("Result: ", process_with_disabled_instructions(data))
+
+    print("\nPart 2 -- Alternative Method")
+    print("------")
+    print("Result: ", process_flag_method(data))
+
